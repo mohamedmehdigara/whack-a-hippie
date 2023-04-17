@@ -1,17 +1,26 @@
+//index.js
+
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom';
+//import our store
+import store, { startGame, onHippieClick } from './store/store';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './index.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+//subscribe keeps an array of listener callbacks and returns a function to remove the new callback
+store.subscribe(render);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+//renders our store
+render();
+
+//renders our main function which contains the game objects
+function render() {
+  ReactDOM.render(
+    <App 
+      state={store.getState()}
+      onStart={startGame}
+      onHippieClick={onHippieClick}
+    />, 
+    document.getElementById('root')
+  );
+}
